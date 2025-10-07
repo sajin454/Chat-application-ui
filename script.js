@@ -1,28 +1,40 @@
-const messagesContainer = document.getElementById('messages');
-const inputField = document.getElementById('input');
-const sendBtn = document.getElementById('sendBtn');
-
-function addMessage(text, sender) {
-  const msgDiv = document.createElement('div');
-  msgDiv.classList.add('message', sender);
-  msgDiv.textContent = text;
-  messagesContainer.appendChild(msgDiv);
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
+const inputField = document.getElementById("userInput");
+const chatBox = document.getElementById("chatBox");
 
 function sendMessage() {
-  const text = inputField.value.trim();
-  if (!text) return;
+  const messageText = inputField.value.trim();
+  if (messageText === "") return;
 
-  addMessage(text, 'me');
-  inputField.value = '';
+  // Create user message
+  const userMsg = document.createElement("div");
+  userMsg.classList.add("message", "sent");
+  userMsg.textContent = messageText;
+  chatBox.appendChild(userMsg);
 
+  // Scroll to bottom
+  chatBox.scrollTop = chatBox.scrollHeight;
+
+  // Clear input
+  inputField.value = "";
+
+  // Simulate bot reply
   setTimeout(() => {
-    addMessage("Got it 👍 Let's continue!", 'bot');
+    const botMsg = document.createElement("div");
+    botMsg.classList.add("message", "received");
+    const responses = [
+      "That's interesting!",
+      "Tell me more!",
+      "Sounds good 😊",
+      "Can you explain further?",
+      "Haha, nice one 😄",
+    ];
+    botMsg.textContent = responses[Math.floor(Math.random() * responses.length)];
+    chatBox.appendChild(botMsg);
+    chatBox.scrollTop = chatBox.scrollHeight;
   }, 1000);
 }
 
-sendBtn.addEventListener('click', sendMessage);
-inputField.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') sendMessage();
+// Allow Enter key to send message
+inputField.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") sendMessage();
 });
